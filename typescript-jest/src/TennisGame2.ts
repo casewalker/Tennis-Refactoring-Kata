@@ -18,9 +18,6 @@ export class TennisGame2 implements TennisGame {
   P1point: number = 0;
   P2point: number = 0;
 
-  P1res: string = '';
-  P2res: string = '';
-
   private player1Name: string;
   private player2Name: string;
 
@@ -31,48 +28,57 @@ export class TennisGame2 implements TennisGame {
 
   getScore(): string {
     let score: string = '';
-    if (this.P1point === this.P2point && this.P1point < 4) {
+    
+    const tiedScore = this.P1point === this.P2point
+    const p1ScoreIsHigher = this.P1point > this.P2point
+    const p2ScoreIsHigher = this.P2point > this.P1point
+
+    const p1ScoreIsZero = this.P1point === 0
+    const p1ScoreIsLessThanFour = this.P1point < 4
+    const p1ScoreIsGreaterThanTwo = this.P1point >2
+    const p1HasATwoPlusLead = (this.P1point - this.P2point) >= 2
+
+    const p2ScoreIsZero = this.P2point === 0
+    const p2ScoreIsLessThanFour = this.P2point < 4
+    const p2ScoreIsGreaterThanTwo = this.P2point >2
+    const p2HasATwoPlusLead = (this.P2point - this.P1point) >= 2
+    
+    if (tiedScore && p1ScoreIsLessThanFour) {
       score = `${SCORE_STRING[this.P1point]}-All`;
     }
 
-    if (this.P1point === this.P2point && this.P1point >= 3)
+    if (tiedScore && p1ScoreIsGreaterThanTwo) {
       score = 'Deuce';
-
-    if (this.P1point > 0 && this.P2point === 0) {
-      this.P1res = SCORE_STRING[this.P1point];
-
-      this.P2res = 'Love';
-      score = this.P1res + '-' + this.P2res;
-    }
-    if (this.P2point > 0 && this.P1point === 0) {
-      this.P2res = SCORE_STRING[this.P2point];
-
-
-      this.P1res = 'Love';
-      score = this.P1res + '-' + this.P2res;
     }
 
-    // TODO Clean this up
-    if ((this.P1point > this.P2point && this.P1point < 4) || (this.P2point > this.P1point && this.P2point < 4)) {
-      this.P1res = SCORE_STRING[this.P1point];
-      this.P2res = SCORE_STRING[this.P2point];
-      score = this.P1res + '-' + this.P2res;
+    if (!p1ScoreIsZero && p2ScoreIsZero) {
+      score = `${SCORE_STRING[this.P1point]}-Love`;
     }
 
-    if (this.P1point > this.P2point && this.P2point >= 3) {
+    if (!p2ScoreIsZero && p1ScoreIsZero) {
+      score = `Love-${SCORE_STRING[this.P2point]}`;
+    }
+
+    if (!tiedScore && (p1ScoreIsLessThanFour || p2ScoreIsLessThanFour)) {
+      score = `${SCORE_STRING[this.P1point]}-${SCORE_STRING[this.P2point]}`;
+    }
+
+    if (p1ScoreIsHigher && p2ScoreIsGreaterThanTwo) {
       score = 'Advantage player1';
     }
 
-    if (this.P2point > this.P1point && this.P1point >= 3) {
+    if (p2ScoreIsHigher && p1ScoreIsGreaterThanTwo) {
       score = 'Advantage player2';
     }
 
-    if (this.P1point >= 4 && this.P2point >= 0 && (this.P1point - this.P2point) >= 2) {
+    if (!p1ScoreIsLessThanFour  && p1HasATwoPlusLead) {
       score = 'Win for player1';
     }
-    if (this.P2point >= 4 && this.P1point >= 0 && (this.P2point - this.P1point) >= 2) {
+
+    if (!p2ScoreIsLessThanFour && p2HasATwoPlusLead) {
       score = 'Win for player2';
     }
+
     return score;
   }
 
