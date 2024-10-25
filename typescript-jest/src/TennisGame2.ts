@@ -1,5 +1,19 @@
 import { TennisGame } from './TennisGame';
 
+/**
+ * Ideas for refactors:
+ * - Score can equal various strings, store strings in variables
+ * - Conditionals - see what's shared, extract out common cases
+ * - Refactor if-case code blocks into independent functions
+ * - Look for any/all duplicated logic
+ *   -- Use condition-check variables instead of copy-pasted equality checks
+ * - Could score-strings be an array? Index === score string? e.g. idx 0 === "Love"
+ *   -- Object instead of array? More readable than array idx
+ * - Type for single player
+ */
+
+const SCORE_STRING = ['Love', 'Fifteen', 'Thirty', 'Forty'];
+
 export class TennisGame2 implements TennisGame {
   P1point: number = 0;
   P2point: number = 0;
@@ -18,60 +32,30 @@ export class TennisGame2 implements TennisGame {
   getScore(): string {
     let score: string = '';
     if (this.P1point === this.P2point && this.P1point < 4) {
-      if (this.P1point === 0)
-        score = 'Love';
-      if (this.P1point === 1)
-        score = 'Fifteen';
-      if (this.P1point === 2)
-        score = 'Thirty';
-      score += '-All';
+      score = `${SCORE_STRING[this.P1point]}-All`;
     }
+
     if (this.P1point === this.P2point && this.P1point >= 3)
       score = 'Deuce';
 
     if (this.P1point > 0 && this.P2point === 0) {
-      if (this.P1point === 1)
-        this.P1res = 'Fifteen';
-      if (this.P1point === 2)
-        this.P1res = 'Thirty';
-      if (this.P1point === 3)
-        this.P1res = 'Forty';
+      this.P1res = SCORE_STRING[this.P1point];
 
       this.P2res = 'Love';
       score = this.P1res + '-' + this.P2res;
     }
     if (this.P2point > 0 && this.P1point === 0) {
-      if (this.P2point === 1)
-        this.P2res = 'Fifteen';
-      if (this.P2point === 2)
-        this.P2res = 'Thirty';
-      if (this.P2point === 3)
-        this.P2res = 'Forty';
+      this.P2res = SCORE_STRING[this.P2point];
+
 
       this.P1res = 'Love';
       score = this.P1res + '-' + this.P2res;
     }
 
-    if (this.P1point > this.P2point && this.P1point < 4) {
-      if (this.P1point === 2)
-        this.P1res = 'Thirty';
-      if (this.P1point === 3)
-        this.P1res = 'Forty';
-      if (this.P2point === 1)
-        this.P2res = 'Fifteen';
-      if (this.P2point === 2)
-        this.P2res = 'Thirty';
-      score = this.P1res + '-' + this.P2res;
-    }
-    if (this.P2point > this.P1point && this.P2point < 4) {
-      if (this.P2point === 2)
-        this.P2res = 'Thirty';
-      if (this.P2point === 3)
-        this.P2res = 'Forty';
-      if (this.P1point === 1)
-        this.P1res = 'Fifteen';
-      if (this.P1point === 2)
-        this.P1res = 'Thirty';
+    // TODO Clean this up
+    if ((this.P1point > this.P2point && this.P1point < 4) || (this.P2point > this.P1point && this.P2point < 4)) {
+      this.P1res = SCORE_STRING[this.P1point];
+      this.P2res = SCORE_STRING[this.P2point];
       score = this.P1res + '-' + this.P2res;
     }
 
