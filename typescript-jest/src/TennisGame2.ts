@@ -2,13 +2,14 @@ import { TennisGame } from './TennisGame';
 
 /**
  * Ideas for refactors:
- * - Score can equal various strings, store strings in variables
+ * X Score can equal various strings, store strings in variables
  * - Conditionals - see what's shared, extract out common cases
- * - Refactor if-case code blocks into independent functions
- * - Look for any/all duplicated logic
- *   -- Use condition-check variables instead of copy-pasted equality checks
- * - Could score-strings be an array? Index === score string? e.g. idx 0 === "Love"
- *   -- Object instead of array? More readable than array idx
+ * X Refactor if-case code blocks into independent functions
+ * X Look for any/all duplicated logic
+ *   X- Use condition-check variables instead of copy-pasted equality checks
+ *   -- Are there any outer if-cases that can be combined in a readable way?
+ * X Could score-strings be an array? Index === score string? e.g. idx 0 === "Love"
+ *   X- Object instead of array? More readable than array idx
  * - Type for single player
  */
 
