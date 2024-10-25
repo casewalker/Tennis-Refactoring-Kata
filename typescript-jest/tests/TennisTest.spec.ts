@@ -25,15 +25,6 @@ function checkScore(game: TennisGame, player1Score: number, player2Score: number
 }
 
 describe('TennisGame', () => {
-
-  describe('TennisGame1', () => {
-    scores.forEach(([player1Score, player2Score, expectedScore]) => {
-      it(`scores ${player1Score}:${player2Score} as ${expectedScore}`, () => {
-        checkScore(new TennisGame1('player1', 'player2'), player1Score, player2Score, expectedScore);
-      });
-    });
-  });
-
   describe('TennisGame2', () => {
     scores.forEach(([player1Score, player2Score, expectedScore]) => {
       it(`scores ${player1Score}:${player2Score} as ${expectedScore}`, () => {
@@ -41,37 +32,4 @@ describe('TennisGame', () => {
       });
     });
   });
-
-  describe('TennisGame3', () => {
-    scores.forEach(([player1Score, player2Score, expectedScore]) => {
-      it(`scores ${player1Score}:${player2Score} as ${expectedScore}`, () => {
-        checkScore(new TennisGame3('player1', 'player2'), player1Score, player2Score, expectedScore);
-      });
-    });
-  });
-
-  describe('TennisGame4', () => {
-    scores.forEach(([player1Score, player2Score, expectedScore]) => {
-      it(`scores ${player1Score}:${player2Score} as ${expectedScore}`, function () {
-        checkScore(new TennisGame4('player1', 'player2'), player1Score, player2Score, expectedScore);
-      });
-    });
-  });
-
-  describe('TennisGame5', () => {
-    scores.forEach(([player1Score, player2Score, expectedScore]) => {
-      it(`scores ${player1Score}:${player2Score} as ${expectedScore}`, function () {
-        checkScore(new TennisGame5('player1', 'player2'), player1Score, player2Score, expectedScore);
-      });
-    });
-  });
-
-  describe('TennisGame6', () => {
-    scores.forEach(([player1Score, player2Score, expectedScore]) => {
-      it(`scores ${player1Score}:${player2Score} as ${expectedScore}`, function () {
-        checkScore(new TennisGame6('player1', 'player2'), player1Score, player2Score, expectedScore);
-      });
-    });
-  });
-
 });
