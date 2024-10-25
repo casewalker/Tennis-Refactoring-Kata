@@ -1,6 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {TennisGame, TennisGame1, TennisGame2, TennisGame3, TennisGame4, TennisGame5, TennisGame6} from '../src';
+// import {TennisGame, TennisGame1, TennisGame2, TennisGame3, TennisGame4, TennisGame5, TennisGame6} from '../src';
+import { TennisGame, TennisGame2 } from '../src';
+import {Player} from "../src/Player";
+
+// Set the date to 2000
+jest.useFakeTimers().setSystemTime(new Date('2000-01-01T00:00:00Z'));
 
 function getAllScores(): Array<[number, number, string]> {
   const testCases = path.resolve(__dirname, 'scores.json');
@@ -28,7 +33,12 @@ describe('TennisGame', () => {
   describe('TennisGame2', () => {
     scores.forEach(([player1Score, player2Score, expectedScore]) => {
       it(`scores ${player1Score}:${player2Score} as ${expectedScore}`, () => {
-        checkScore(new TennisGame2('player1', 'player2'), player1Score, player2Score, expectedScore);
+        const tennisGame = new TennisGame2();
+        tennisGame.registerPlayers({
+          player1: new Player("player1", "1979-01-01T00:00:00Z"),
+          player2: new Player("player2", "1955-01-01T00:00:00Z"),
+        });
+        checkScore(tennisGame, player1Score, player2Score, expectedScore);
       });
     });
   });

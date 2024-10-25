@@ -1,6 +1,6 @@
-import { TennisGame } from './TennisGame';
+import { TennisGame_Old } from './TennisGame';
 
-export class TennisGame6 implements TennisGame {
+export class TennisGame6 implements TennisGame_Old {
   private player2Name : string;
   private player1Name : string;
   private player1Score: number;

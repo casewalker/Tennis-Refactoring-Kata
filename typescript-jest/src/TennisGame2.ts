@@ -1,4 +1,5 @@
-import { TennisGame } from './TennisGame';
+import {Player} from "./Player";
+import {PlayerRegistration, TennisGame} from './TennisGame';
 
 /**
  * Ideas for refactors:
@@ -16,36 +17,38 @@ import { TennisGame } from './TennisGame';
 const SCORE_STRING = ['Love', 'Fifteen', 'Thirty', 'Forty'];
 
 export class TennisGame2 implements TennisGame {
-  P1point: number = 0;
-  P2point: number = 0;
+  private player1: Player | undefined;
+  private player2: Player | undefined;
 
-  private player1Name: string;
-  private player2Name: string;
-
-  constructor(player1Name: string, player2Name: string) {
-    this.player1Name = player1Name;
-    this.player2Name = player2Name;
+  registerPlayers({ player1, player2 }: PlayerRegistration): void {
+    this.player1 = player1;
+    this.player2 = player2;
   }
 
   getScore(): string {
+    if (this.player1 == undefined || this.player2 == undefined) {
+      throw new Error("Some player(s) were undefined");
+    }
+
+    const today = new Date();
     let score: string = '';
     
-    const tiedScore = this.P1point === this.P2point
-    const p1ScoreIsHigher = this.P1point > this.P2point
-    const p2ScoreIsHigher = this.P2point > this.P1point
+    const tiedScore = this.player1.score === this.player2.score
+    const p1ScoreIsHigher = this.player1.score > this.player2.score
+    const p2ScoreIsHigher = this.player2.score > this.player1.score
 
-    const p1ScoreIsZero = this.P1point === 0
-    const p1ScoreIsLessThanFour = this.P1point < 4
-    const p1ScoreIsGreaterThanTwo = this.P1point >2
-    const p1HasATwoPlusLead = (this.P1point - this.P2point) >= 2
+    const p1ScoreIsZero = this.player1.score === 0
+    const p1ScoreIsLessThanFour = this.player1.score < 4
+    const p1ScoreIsGreaterThanTwo = this.player1.score >2
+    const p1HasATwoPlusLead = (this.player1.score - this.player2.score) >= 2
 
-    const p2ScoreIsZero = this.P2point === 0
-    const p2ScoreIsLessThanFour = this.P2point < 4
-    const p2ScoreIsGreaterThanTwo = this.P2point >2
-    const p2HasATwoPlusLead = (this.P2point - this.P1point) >= 2
+    const p2ScoreIsZero = this.player2.score === 0
+    const p2ScoreIsLessThanFour = this.player2.score < 4
+    const p2ScoreIsGreaterThanTwo = this.player2.score >2
+    const p2HasATwoPlusLead = (this.player2.score - this.player1.score) >= 2
     
     if (tiedScore && p1ScoreIsLessThanFour) {
-      score = `${SCORE_STRING[this.P1point]}-All`;
+      score = `${SCORE_STRING[this.player1.score]}-All`;
     }
 
     if (tiedScore && p1ScoreIsGreaterThanTwo) {
@@ -53,31 +56,31 @@ export class TennisGame2 implements TennisGame {
     }
 
     if (!p1ScoreIsZero && p2ScoreIsZero) {
-      score = `${SCORE_STRING[this.P1point]}-Love`;
+      score = `${SCORE_STRING[this.player1.score]}-Love`;
     }
 
     if (!p2ScoreIsZero && p1ScoreIsZero) {
-      score = `Love-${SCORE_STRING[this.P2point]}`;
+      score = `Love-${SCORE_STRING[this.player2.score]}`;
     }
 
     if (!tiedScore && (p1ScoreIsLessThanFour || p2ScoreIsLessThanFour)) {
-      score = `${SCORE_STRING[this.P1point]}-${SCORE_STRING[this.P2point]}`;
+      score = `${SCORE_STRING[this.player1.score]}-${SCORE_STRING[this.player2.score]}`;
     }
 
     if (p1ScoreIsHigher && p2ScoreIsGreaterThanTwo) {
-      score = 'Advantage player1';
+      score = `Advantage ${this.player1.name} (${this.player1.getAge(today)} years old)`;
     }
 
     if (p2ScoreIsHigher && p1ScoreIsGreaterThanTwo) {
-      score = 'Advantage player2';
+      score = `Advantage ${this.player2.name} (${this.player2.getAge(today)} years old)`;
     }
 
     if (!p1ScoreIsLessThanFour  && p1HasATwoPlusLead) {
-      score = 'Win for player1';
+      score = `Win for ${this.player1.name} (${this.player1.getAge(today)} years old)`;
     }
 
     if (!p2ScoreIsLessThanFour && p2HasATwoPlusLead) {
-      score = 'Win for player2';
+      score = `Win for ${this.player2.name} (${this.player2.getAge(today)} years old)`;
     }
 
     return score;
@@ -96,11 +99,11 @@ export class TennisGame2 implements TennisGame {
   }
 
   P1Score(): void {
-    this.P1point++;
+    this.player1!.score++;
   }
 
   P2Score(): void {
-    this.P2point++;
+    this.player2!.score++;
   }
 
   wonPoint(player: string): void {

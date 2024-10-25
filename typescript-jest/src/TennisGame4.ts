@@ -1,6 +1,6 @@
-import { TennisGame } from './TennisGame';
+import { TennisGame_Old } from './TennisGame';
 
-export class TennisGame4  implements TennisGame {
+export class TennisGame4  implements TennisGame_Old {
 
     public server : string;
     public receiver : string;
